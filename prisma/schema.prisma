@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pet {
+  id               Int                @id @default(autoincrement())
+  name             String
+  clienteId        Int
+  cliente          Cliente            @relation(fields: [clienteId], references: [id])
+  ServicoRealizado ServicoRealizado[]
+}
+
+model Cliente {
+  id               Int                @id @default(autoincrement())
+  name             String
+  telefone         String
+  endereco         String
+  Pet              Pet[]
+  Fatura           Fatura[]
+  ServicoRealizado ServicoRealizado[]
+}
+
+model Funcionario {
+  id               Int                @id @default(autoincrement())
+  name             String
+  ServicoRealizado ServicoRealizado[]
+}
+
+model Servico {
+  id               Int                @id @default(autoincrement())
+  name             String
+  valor            Float
+  ServicoRealizado ServicoRealizado[]
+}
+
+model Fatura {
+  id               Int                @id @default(autoincrement())
+  clienteId        Int
+  cliente          Cliente            @relation(fields: [clienteId], references: [id])
+  valor_total      Float
+  ServicoRealizado ServicoRealizado[]
+}
+
+model ServicoRealizado {
+  id            Int         @id @default(autoincrement())
+  servicoId     Int
+  faturaId      Int
+  clienteId     Int
+  funcionarioId Int
+  petId         Int
+  servico       Servico     @relation(fields: [servicoId], references: [id])
+  fatura        Fatura      @relation(fields: [faturaId], references: [id])
+  cliente       Cliente     @relation(fields: [clienteId], references: [id])
+  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
+  pet           Pet         @relation(fields: [petId], references: [id])
+}
