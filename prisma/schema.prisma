@@ -15,7 +15,7 @@ datasource db {
 
 model Pet {
   id               Int                @id @default(autoincrement())
-  name             String
+  nome             String
   clienteId        Int
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
   ServicoRealizado ServicoRealizado[]
@@ -26,22 +26,22 @@ model Cliente {
   name             String
   telefone         String
   endereco         String
-  Pet              Pet[]
-  Fatura           Fatura[]
-  ServicoRealizado ServicoRealizado[]
+  pet              Pet[]
+  fatura           Fatura[]
+  servicoRealizado ServicoRealizado[]
 }
 
 model Funcionario {
   id               Int                @id @default(autoincrement())
   name             String
-  ServicoRealizado ServicoRealizado[]
+  servicoRealizado ServicoRealizado[]
 }
 
 model Servico {
   id               Int                @id @default(autoincrement())
   name             String
   valor            Float
-  ServicoRealizado ServicoRealizado[]
+  servicoRealizado ServicoRealizado[]
 }
 
 model Fatura {
@@ -49,7 +49,7 @@ model Fatura {
   clienteId        Int
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
   valor_total      Float
-  ServicoRealizado ServicoRealizado[]
+  servicoRealizado ServicoRealizado[]
 }
 
 model ServicoRealizado {
