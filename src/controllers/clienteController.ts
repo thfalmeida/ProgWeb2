@@ -9,6 +9,7 @@ const clientes = [
   }
 ];
 
+
 export const getAllClientes = (req: Request, res: Response) => {
   res.json(clientes);
 };
