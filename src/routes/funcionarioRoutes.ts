@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAllFuncionarios, createFuncionario, deleteFuncionario, getFuncionarioById, updateFuncionario} from '../controllers/funcionarioController';
+import { FuncionarioController} from '../controllers/funcionarioController';
 
 const router = Router();
-
+const funcionarioController = new FuncionarioController();
 /**
  * @swagger
  * tags:
@@ -32,7 +32,7 @@ const router = Router();
  *                   name:
  *                     type: string
  */
-router.get('/', getAllFuncionarios);
+router.get('/', funcionarioController.getAllFuncionarios);
 
 
 /**
@@ -65,7 +65,7 @@ router.get('/', getAllFuncionarios);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.get('/:id', getFuncionarioById);
+router.get('/:id', funcionarioController.getFuncionarioById);
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ router.get('/:id', getFuncionarioById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', createFuncionario);
+router.post('/', funcionarioController.createFuncionario);
 
 
 /**
@@ -129,7 +129,7 @@ router.post('/', createFuncionario);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.put('/:id', updateFuncionario);
+router.put('/:id', funcionarioController.updateFuncionario);
 
 
 
@@ -152,7 +152,7 @@ router.put('/:id', updateFuncionario);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.delete('/:id', deleteFuncionario);
+router.delete('/:id', funcionarioController.deleteFuncionario);
 
 
 

@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAllServicos, createServico, deleteServico, getServicoById, updateServico} from '../controllers/servicoController';
+import { ServicoController} from '../controllers/servicoController';
 
 const router = Router();
-
+const servicoController = new ServicoController();
 
 /**
  * @swagger
@@ -33,7 +33,7 @@ const router = Router();
  *                   name:
  *                     type: string
  */
-router.get('/', getAllServicos);
+router.get('/', servicoController.getAllServicos);
 
 /**
  * @swagger
@@ -65,7 +65,7 @@ router.get('/', getAllServicos);
  *       404:
  *         description: servico não encontrado
  */
-router.get('/:id', getServicoById);
+router.get('/:id', servicoController.getServicoById);
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ router.get('/:id', getServicoById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', createServico);
+router.post('/', servicoController.createServico);
 
 /**
  * @swagger
@@ -128,7 +128,7 @@ router.post('/', createServico);
  *       404:
  *         description: servico não encontrado
  */
-router.put('/:id', updateServico);
+router.put('/:id', servicoController.updateServico);
 
 
 /**
@@ -150,7 +150,7 @@ router.put('/:id', updateServico);
  *       404:
  *         description: servico não encontrado
  */
-router.delete('/:id', deleteServico);
+router.delete('/:id', servicoController.deleteServico);
 
 
 

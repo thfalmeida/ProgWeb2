@@ -1,52 +1,40 @@
 import { Request, Response } from 'express';
+import { PetService } from '../services/petService';
 
-const pets = [
-  {
-      id: 0,
-      nome: "Au au",
-      idade: "23",
-      raça: "vira-lata"
+export class PetController{
+  private petService: PetService;
+
+  constructor(){
+    this.petService = new PetService();
   }
-];
 
-export const getAllpets = (req: Request, res: Response) => {
-  res.json(pets);
+
+public getAllpets = (req: Request, res: Response) => {
+  res.json();
 };
 
-export const getPetById = (req: Request, res: Response) => {
-  const user = pets.find(u => u.id === parseInt(req.params.id));
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).send('Pet not found');
-  }
+public getPetById = (req: Request, res: Response) => {
+  const pet = this.petService.getPetById(parseInt(req.params.id))
+  pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado");
 };
 
-export const createPet = (req: Request, res: Response) => {
+public createPet = (req: Request, res: Response) => {
   const { id, nome, idade, raça } = req.body;
-  pets.push({ id, nome, idade, raça});
-  res.status(201).json({ id, nome });
+
+  const pet = this.petService.createPet(id, nome, idade, raça);
+  res.status(201).json(pet);
 };
 
-export const updatePet = (req: Request, res: Response) => {
+public updatePet = (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nome } = req.body;
-  const pet = pets.find(u => u.id === parseInt(id));
-  if (pet) {
-    pet.nome = nome;
-    res.json(pet);
-  } else {
-    res.status(404).send('Pet not found');
-  }
+  const { nome, idade, raça } = req.body;
+  const pet = this.petService.updatePet(parseInt(id), nome, idade, raça)
+  pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado");
 };
 
-export const deletePet = (req: Request, res: Response) => {
+public deletePet = (req: Request, res: Response) => {
   const { id } = req.params;
-  const index = pets.findIndex(u => u.id === parseInt(id));
-  if (index !== -1) {
-    pets.splice(index, 1);
-    res.status(204).send();
-  } else {
-    res.status(404).send('Pet not found');
-  }
+  const pet = this.petService.deletePetById(parseInt(id));
+  pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado")
 };
+}

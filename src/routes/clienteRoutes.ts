@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAllClientes, createCliente, deleteCliente, getClienteById, updateCliente} from '../controllers/clienteController';
+import { ClienteController} from '../controllers/clienteController';
 
 const router = Router();
-
+const clienteController = new ClienteController();
 /**
  * @swagger
  * tags:
@@ -32,7 +32,7 @@ const router = Router();
  *                   name:
  *                     type: string
  */
-router.get('/', getAllClientes);
+router.get('/', clienteController.getAllClientes);
 
 /**
  * @swagger
@@ -64,7 +64,7 @@ router.get('/', getAllClientes);
  *       404:
  *         description: Cliente não encontrado
  */
-router.get('/:id', getClienteById);
+router.get('/:id', clienteController.getClienteById);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.get('/:id', getClienteById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', createCliente);
+router.post('/', clienteController.createCliente);
 
 /**
  * @swagger
@@ -127,7 +127,7 @@ router.post('/', createCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.put('/:id', updateCliente);
+router.put('/:id', clienteController.updateCliente);
 
 /**
  * @swagger
@@ -148,6 +148,6 @@ router.put('/:id', updateCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.delete('/:id', deleteCliente);
+router.delete('/:id', clienteController.deleteCliente);
 
 export default router;

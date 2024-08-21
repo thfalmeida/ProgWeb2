@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAllpets, createPet, deletePet, getPetById, updatePet} from '../controllers/petController';
+import { PetController} from '../controllers/petController';
 
 const router = Router();
-
+const petController = new PetController();
 /**
  * @swagger
  * tags:
@@ -32,7 +32,7 @@ const router = Router();
  *                   name:
  *                     type: string
  */
-router.get('/', getAllpets);
+router.get('/', petController.getAllpets);
 
 
 
@@ -67,7 +67,7 @@ router.get('/', getAllpets);
  *       404:
  *         description: pet não encontrado
  */
-router.get('/:id', getPetById);
+router.get('/:id', petController.getPetById);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.get('/:id', getPetById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', createPet);
+router.post('/', petController.createPet);
 
 
 
@@ -132,7 +132,7 @@ router.post('/', createPet);
  *       404:
  *         description: pet não encontrado
  */
-router.put('/:id', updatePet);
+router.put('/:id', petController.updatePet);
 
 
 
@@ -157,7 +157,7 @@ router.put('/:id', updatePet);
  *       404:
  *         description: pet não encontrado
  */
-router.delete('/:id', deletePet);
+router.delete('/:id', petController.deletePet);
 
 
 

@@ -1,51 +1,40 @@
 import { Request, Response } from 'express';
+import { ServicoService } from '../services/servicoService';
 
-const servicos = [
-  {
-      id: 0,
-      nome: "Au au",
-      valor: "23"
+export class ServicoController {
+  private servicoService : ServicoService;
+
+  constructor(){
+    this.servicoService = new ServicoService;
   }
-];
 
-export const getAllServicos = (req: Request, res: Response) => {
-  res.json(servicos);
-};
 
-export const getServicoById = (req: Request, res: Response) => {
-  const user = servicos.find(u => u.id === parseInt(req.params.id));
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404).send('Servico not found');
-  }
-};
+  public getAllServicos = (req: Request, res: Response) => {
+    res.json(this.servicoService.getAllServicos);
+  };
 
-export const createServico = (req: Request, res: Response) => {
-  const { id, nome, idade } = req.body;
-  servicos.push({ id, nome, valor: idade});
-  res.status(201).json({ id, nome });
-};
+  public getServicoById = (req: Request, res: Response) => {
+    const servico = this.servicoService.getServicoById(parseInt(req.params.id))
+    servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
+  };
 
-export const updateServico = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { nome } = req.body;
-  const servico = servicos.find(u => u.id === parseInt(id));
-  if (servico) {
-    servico.nome = nome;
-    res.json(servico);
-  } else {
-    res.status(404).send('Servico not found');
-  }
-};
+  public createServico = (req: Request, res: Response) => {
+    const { id, nome, valor} = req.body;
+    const servico = this.servicoService.createServico(id, nome, valor);
+    res.status(201).json(servico);
+  };
 
-export const deleteServico = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const index = servicos.findIndex(u => u.id === parseInt(id));
-  if (index !== -1) {
-    servicos.splice(index, 1);
-    res.status(204).send();
-  } else {
-    res.status(404).send('Servico not found');
-  }
-};
+  public updateServico = (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { nome, valor } = req.body;
+    const servico = this.servicoService.updateServico(parseInt(id), nome, valor);
+    servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
+  };
+
+  public deleteServico = (req: Request, res: Response) => {
+    const { id } = req.params;
+    const servico = this.servicoService.deleteServicoById(parseInt(id));
+    
+    servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
+  };
+}
