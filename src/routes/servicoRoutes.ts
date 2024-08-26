@@ -81,11 +81,11 @@ router.get('/:id', servicoController.getServicoById);
  *             type: object
  *             required:
  *               - nome
- *               - telefone
+ *               - valor
  *             properties:
  *               nome:
  *                 type: string
- *               telefone:
+ *               valor:
  *                 type: string
  *     responses:
  *       201:
@@ -116,11 +116,11 @@ router.post('/', servicoController.createServico);
  *             type: object
  *             required:
  *               - nome
- *               - telefone
+ *               - valor
  *             properties:
  *               nome:
  *                 type: string
- *               telefone:
+ *               valor:
  *                 type: number
  *     responses:
  *       200:

@@ -57,10 +57,12 @@ router.get('/', clienteController.getAllClientes);
  *               properties:
  *                 id:
  *                   type: integer
- *                 name:
+ *                 nome:
  *                   type: string
- *                 price:
- *                   type: number
+ *                 endereco:
+ *                   type: string
+ *                 telefone:
+ *                   type: string
  *       404:
  *         description: Cliente não encontrado
  */
@@ -81,11 +83,16 @@ router.get('/:id', clienteController.getClienteById);
  *             required:
  *               - nome
  *               - telefone
+ *               - endereco
  *             properties:
- *               nome:
- *                 type: string
- *               telefone:
- *                 type: string
+ *                 id:
+ *                   type: integer
+ *                 nome:
+ *                   type: string
+ *                 endereco:
+ *                   type: string
+ *                 telefone:
+ *                   type: string
  *     responses:
  *       201:
  *         description: Cliente criado com sucesso
@@ -116,11 +123,14 @@ router.post('/', clienteController.createCliente);
  *             required:
  *               - nome
  *               - telefone
+ *               - endereco
  *             properties:
  *               nome:
  *                 type: string
  *               telefone:
- *                 type: number
+ *                 type: string
+ *               endereco:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Cliente atualizado com sucesso

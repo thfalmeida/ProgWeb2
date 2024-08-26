@@ -31,6 +31,8 @@ const petController = new PetController();
  *                     type: integer
  *                   name:
  *                     type: string
+ *                    raça:
+ *                      type: string
  */
 router.get('/', petController.getAllpets);
 
@@ -62,8 +64,10 @@ router.get('/', petController.getAllpets);
  *                   type: integer
  *                 name:
  *                   type: string
- *                 price:
- *                   type: number
+ *                 idade:
+ *                   type: string
+ *                  raça: 
+ *                   type: string
  *       404:
  *         description: pet não encontrado
  */
@@ -83,11 +87,14 @@ router.get('/:id', petController.getPetById);
  *             type: object
  *             required:
  *               - nome
- *               - telefone
+ *               - idade
+ *               - raça
  *             properties:
  *               nome:
  *                 type: string
- *               telefone:
+ *               idade:
+ *                 type: string
+ *               raça:
  *                 type: string
  *     responses:
  *       201:
@@ -120,12 +127,15 @@ router.post('/', petController.createPet);
  *             type: object
  *             required:
  *               - nome
- *               - telefone
+ *               - idade
+ *               - raça
  *             properties:
  *               nome:
  *                 type: string
- *               telefone:
- *                 type: number
+ *               idade:
+ *                 type: string
+ *               raça:
+ *                 type: string
  *     responses:
  *       200:
  *         description: pet atualizado com sucesso
