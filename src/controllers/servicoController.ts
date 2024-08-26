@@ -10,7 +10,7 @@ export class ServicoController {
 
 
   public getAllServicos = (req: Request, res: Response) => {
-    res.json(this.servicoService.getAllServicos);
+    res.json(this.servicoService.getAllServicos());
   };
 
   public getServicoById = (req: Request, res: Response) => {

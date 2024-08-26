@@ -3,7 +3,7 @@ export class ServicoService{
         {
             id: 0,
             nome: "Banho",
-            valor: "23"
+            valor: "50"
         }
       ];
 
