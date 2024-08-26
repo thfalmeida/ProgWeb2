@@ -84,10 +84,10 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByID);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do cliente
+ *         description: ID do servico contratado
  *     responses:
  *       200:
- *         description: Cliente retornado com sucesso
+ *         description: Servico contratado retornado com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -102,7 +102,7 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByID);
  *                 servicoId:
  *                   type: number
  *       404:
- *         description: Cliente não encontrado
+ *         description: Serviço contratado não encontrado
  */
 router.get('/:id', servicoRealizadoController.getServicoRealizadoByClienteID);
 
@@ -118,10 +118,10 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByClienteID);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID do cliente
+ *         description: ID do servico contratado
  *     responses:
  *       200:
- *         description: Cliente retornado com sucesso
+ *         description: Servico contratado retornado com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -136,7 +136,7 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByClienteID);
  *                 servicoId:
  *                   type: number
  *       404:
- *         description: Cliente não encontrado
+ *         description: Serviço contratado não encontrado
  */
 router.get('/:id', servicoRealizadoController.getServicoRealizadoByFaturaID);
 
