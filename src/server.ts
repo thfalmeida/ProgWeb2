@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import petRoutes from './routes/petRoutes'
 import clienteRoutes from './routes/clienteRoutes'
 import funcionarioRoutes from './routes/funcionarioRoutes'
+import servicoRealizadoRoutes from './routes/servicoRealizadoRoutes'
 import servicoRoutes from './routes/servicoRoutes'
 import { setupSwagger } from './config/swagger';
 
@@ -17,6 +18,7 @@ setupSwagger(app);
 app.use(express.json());
 
 // Usar os roteadores
+app.use('/servicoContratado', servicoRealizadoRoutes)
 app.use('/pets', petRoutes);
 app.use('/clientes', clienteRoutes);
 app.use('/funcionarios', funcionarioRoutes);
