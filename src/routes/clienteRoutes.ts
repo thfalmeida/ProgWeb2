@@ -109,7 +109,7 @@ router.post('/', clienteController.createCliente);
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
- *         id: id
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer
@@ -147,7 +147,7 @@ router.put('/:id', clienteController.updateCliente);
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
- *         id: id
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer

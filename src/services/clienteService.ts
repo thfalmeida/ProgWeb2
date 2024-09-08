@@ -1,3 +1,7 @@
+import { PrismaClient } from "@prisma/client";
+import { ClienteModel } from "../models/clienteModel";
+
+const prisma = new PrismaClient();
 
 export class ClienteService{
 
@@ -10,37 +14,35 @@ export class ClienteService{
         }
       ];
 
-    public getAllClientes(){
-        return this.clientes;
+    public async getAllClientes(){
+        return await prisma.cliente.findMany();
     }
 
-    public getClienteById(id: number){
-        const user = this.clientes.find(u => u.id === id);
-        if (user) {
-          return user;
-        } else {
-          return null;
-        }
+    public async getClienteById(id: number){
+      return await prisma.cliente.findUnique({ where: { id } });
     }
 
-    public createCliente(id: number, nome: string, telefone: string, endereco: string){
-        this.clientes.push({ id, nome, telefone, endereco});
-        return this.clientes.find(u => u.id === id);
+    public async createCliente(nome: string, telefone: string, endereco:string){
+        return await prisma.cliente.create({data: {
+          nome: nome,
+          telefone: telefone,
+          endereco: endereco
+        }})
+
+        // return this.clientes.find(u => u.id === id);
     }
 
-    public updateCliente(id: number, nome: string){
-        const cliente = this.clientes.find(u => u.id === id);
-        if (cliente) {
-          cliente.nome = nome;
-          return cliente;
-        } else {
-          return null;
-        }
+    public async updateCliente(id: number, nome: string, telefone: string, endereco:string ){
+      const data = {
+        nome: nome,
+        telefone: telefone,
+        endereco : endereco
+      }
+      return await prisma.cliente.update(
+        { where: { id }, data})
     }
 
-    public deleteCliente(id: number){
-        const index = this.clientes.findIndex(u => u.id === id);
-        const cliente = this.clientes.splice(index, 1);
-        return cliente;
+    public async deleteCliente(id: number){
+      return prisma.cliente.delete({ where: { id } });
     }
 }

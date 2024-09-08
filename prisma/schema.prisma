@@ -23,7 +23,7 @@ model Pet {
 
 model Cliente {
   id               Int                @id @default(autoincrement())
-  name             String
+  nome             String
   telefone         String
   endereco         String
   pet              Pet[]
