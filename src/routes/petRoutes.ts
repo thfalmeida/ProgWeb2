@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { PetController} from '../controllers/petController';
+import { authenticateJWT, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 const petController = new PetController();
@@ -34,7 +35,7 @@ const petController = new PetController();
  *                    raça:
  *                      type: string
  */
-router.get('/', petController.getAllpets);
+router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), petController.getAllpets);
 
 
 
@@ -71,7 +72,7 @@ router.get('/', petController.getAllpets);
  *       404:
  *         description: pet não encontrado
  */
-router.get('/:id', petController.getPetById);
+router.get('/:id',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), petController.getPetById);
 
 /**
  * @swagger
@@ -102,7 +103,7 @@ router.get('/:id', petController.getPetById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', petController.createPet);
+router.post('/',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), petController.createPet);
 
 
 
@@ -142,7 +143,7 @@ router.post('/', petController.createPet);
  *       404:
  *         description: pet não encontrado
  */
-router.put('/:id', petController.updatePet);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), petController.updatePet);
 
 
 
@@ -167,7 +168,7 @@ router.put('/:id', petController.updatePet);
  *       404:
  *         description: pet não encontrado
  */
-router.delete('/:id', petController.deletePet);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), petController.deletePet);
 
 
 

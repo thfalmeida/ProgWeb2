@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ClienteController} from '../controllers/clienteController';
+import { authenticateJWT, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 const clienteController = new ClienteController();
@@ -16,6 +17,8 @@ const clienteController = new ClienteController();
  * /clientes:
  *   get:
  *     summary: Retorna uma lista de clientes
+ *      security:
+ *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     responses:
  *       200:
@@ -32,13 +35,15 @@ const clienteController = new ClienteController();
  *                   name:
  *                     type: string
  */
-router.get('/', clienteController.getAllClientes);
+router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.getAllClientes);
 
 /**
  * @swagger
  * /clientes/{id}:
  *   get:
  *     summary: Retorna um cliente específico pelo ID
+ *      security:
+ *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
@@ -66,13 +71,15 @@ router.get('/', clienteController.getAllClientes);
  *       404:
  *         description: Cliente não encontrado
  */
-router.get('/:id', clienteController.getClienteById);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.getClienteById);
 
 /**
  * @swagger
  * /clientes:
  *   post:
  *     summary: Cria um novo cliente
+ *     security:
+ *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     requestBody:
  *       required: true
@@ -99,13 +106,15 @@ router.get('/:id', clienteController.getClienteById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', clienteController.createCliente);
+router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.createCliente);
 
 /**
  * @swagger
  * /clientes/{id}:
  *   put:
  *     summary: Atualiza um cliente existente
+ *     security:
+ *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
@@ -137,13 +146,15 @@ router.post('/', clienteController.createCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.put('/:id', clienteController.updateCliente);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.updateCliente);
 
 /**
  * @swagger
  * /clientes/{id}:
  *   delete:
  *     summary: Remove um cliente pelo ID
+ *     security:
+ *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
@@ -158,6 +169,6 @@ router.put('/:id', clienteController.updateCliente);
  *       404:
  *         description: Cliente não encontrado
  */
-router.delete('/:id', clienteController.deleteCliente);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.deleteCliente);
 
 export default router;

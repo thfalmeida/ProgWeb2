@@ -1,50 +1,38 @@
+import { PrismaClient } from "@prisma/client";
+
 export class ServicoRealizadoService{
-    servicosRealizados = [{
-        id: 0,
-        clienteId: 0,
-        servicoId: 0,
-        faturaId: 0,
-        petId: 0
-    }]
+    private prisma = new PrismaClient();
 
-    public getAllServicosRealizados(){
-        return this.servicosRealizados;
+    public async getAllServicosRealizados(){
+        return await this.prisma.servicoRealizado.findMany();
     }
 
-    public getServicoRealizadoById(id: number){
-        const servicoRealizado = this.servicosRealizados.find(u => u.id === id);
-        return servicoRealizado;
+    public async getServicoRealizadoById(id: number){
+        return await this.prisma.servicoRealizado.findUnique({ where: { id } });
+      };
+      
+    public async createServicoRealizado (servicoId: number, faturaId: number, clienteId: number, funcionarioId: number, petId: number){
+        return await this.prisma.servicoRealizado.create({data: {
+        servicoId: servicoId,
+        faturaId: faturaId,
+        clienteId: clienteId,
+        funcionarioId: funcionarioId,
+        petId: petId
+        }})
     }
-
-    public getServicoRealizadoByCliente(id: number){
-        const servicosRealizados = this.servicosRealizados.filter(u => u.clienteId === id);
-        return servicosRealizados;
-    }
-
-    public getServicoRealizadoByFatura(id: number){
-        const servicosRealizados = this.servicosRealizados.filter(u => u.faturaId === id);
-        return servicosRealizados;
-    }
-
-    public createServicoRealizado(id: number, clienteId: number, servicoId: number, faturaId: number, petId: number){
-        const servicoRealizado = {id: id, clienteId: clienteId, servicoId: servicoId, faturaId: faturaId, petId: petId};
-        return servicoRealizado;
-    }
-
-    public updateServicoRealizado(id: number, clienteId: number, servicoId: number, faturaId: number, petId: number){
-        const servicoRealizado = this.servicosRealizados.find(u => u.id === id);
-        if(servicoRealizado){
-            servicoRealizado.clienteId = clienteId;
-            servicoRealizado.servicoId = servicoId;
-            servicoRealizado.faturaId = faturaId;
-            servicoRealizado.petId = petId;
+      
+    public async updateServicoRealizado (id: number, servicoId: number, faturaId: number, clienteId: number, funcionarioId: number, petId: number){
+        const data = {
+            servicoId: servicoId,
+            faturaId: faturaId,
+            clienteId: clienteId,
+            funcionarioId: funcionarioId,
+            petId: petId
         }
-        return servicoRealizado;
+        return await this.prisma.servicoRealizado.update({where: { id }, data})
     }
-
-    public deleteServicoRealizadoById(id: number){
-        const index = this.servicosRealizados.findIndex(u => u.id === id);
-        const servicoRealizado = this.servicosRealizados.splice(index, 1);
-        return servicoRealizado;
-    }
+      
+    public async deleteServicoRealizado(id: number){
+        return await this.prisma.servicoRealizado.delete({ where: { id }})
+    };
 }

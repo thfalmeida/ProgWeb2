@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ServicoController} from '../controllers/servicoController';
+import { authenticateJWT, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 const servicoController = new ServicoController();
@@ -33,7 +34,7 @@ const servicoController = new ServicoController();
  *                   name:
  *                     type: string
  */
-router.get('/', servicoController.getAllServicos);
+router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.getAllServicos);
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.get('/', servicoController.getAllServicos);
  *       404:
  *         description: servico não encontrado
  */
-router.get('/:id', servicoController.getServicoById);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.getServicoById);
 
 /**
  * @swagger
@@ -93,7 +94,7 @@ router.get('/:id', servicoController.getServicoById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', servicoController.createServico);
+router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.createServico);
 
 /**
  * @swagger
@@ -128,7 +129,7 @@ router.post('/', servicoController.createServico);
  *       404:
  *         description: servico não encontrado
  */
-router.put('/:id', servicoController.updateServico);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.updateServico);
 
 
 /**
@@ -150,7 +151,7 @@ router.put('/:id', servicoController.updateServico);
  *       404:
  *         description: servico não encontrado
  */
-router.delete('/:id', servicoController.deleteServico);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.deleteServico);
 
 
 

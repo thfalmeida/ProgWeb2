@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ServicoRealizadoController} from '../controllers/servicoRealizadoController';
+import { authenticateJWT, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 const servicoRealizadoController = new ServicoRealizadoController();
@@ -36,7 +37,7 @@ const servicoRealizadoController = new ServicoRealizadoController();
  *                 servicoId:
  *                   type: number
  */
-router.get('/', servicoRealizadoController.getAllServicosRealizados);
+router.get('/', authenticateJWT, authorizeRole(['FUNCIONARIO']),servicoRealizadoController.getAllServicosRealizados);
 
 /**
  * @swagger
@@ -70,7 +71,7 @@ router.get('/', servicoRealizadoController.getAllServicosRealizados);
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id', servicoRealizadoController.getServicoRealizadoByID);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByID);
 
 /**
  * @swagger
@@ -104,7 +105,7 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByID);
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id', servicoRealizadoController.getServicoRealizadoByClienteID);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByClienteID);
 
 /**
  * @swagger
@@ -138,7 +139,7 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByClienteID);
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id', servicoRealizadoController.getServicoRealizadoByFaturaID);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByFaturaID);
 
 /**
  * @swagger
@@ -172,7 +173,7 @@ router.get('/:id', servicoRealizadoController.getServicoRealizadoByFaturaID);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', servicoRealizadoController.createServicoRealizado);
+router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.createServicoRealizado);
 
 /**
  * @swagger
@@ -213,7 +214,7 @@ router.post('/', servicoRealizadoController.createServicoRealizado);
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id', servicoRealizadoController.createServicoRealizado);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.createServicoRealizado);
 
 /**
  * @swagger
@@ -234,6 +235,6 @@ router.put('/:id', servicoRealizadoController.createServicoRealizado);
  *       404:
  *         description: não encontrado
  */
-router.delete('/:id', servicoRealizadoController.deleteServicoRealizado);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.deleteServicoRealizado);
 
 export default router;

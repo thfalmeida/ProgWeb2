@@ -19,21 +19,21 @@ export class ServicoController {
   };
 
   public createServico = (req: Request, res: Response) => {
-    const { id, nome, valor} = req.body;
-    const servico = this.servicoService.createServico(id, nome, valor);
+    const { id, nome, valor, descricao} = req.body;
+    const servico = this.servicoService.createServico(id, nome, valor, descricao);
     res.status(201).json(servico);
   };
 
   public updateServico = (req: Request, res: Response) => {
     const { id } = req.params;
-    const { nome, valor } = req.body;
-    const servico = this.servicoService.updateServico(parseInt(id), nome, valor);
+    const { nome, valor, descricao } = req.body;
+    const servico = this.servicoService.updateServico(parseInt(id), nome, valor, descricao);
     servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
   };
 
   public deleteServico = (req: Request, res: Response) => {
     const { id } = req.params;
-    const servico = this.servicoService.deleteServicoById(parseInt(id));
+    const servico = this.servicoService.deleteServico(parseInt(id));
     
     servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
   };

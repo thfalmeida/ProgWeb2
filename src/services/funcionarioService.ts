@@ -1,44 +1,33 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 export class FuncionarioService{
+ 
+public async getAllFuncionarios(){
+  return await prisma.funcionario.findMany();
+};
 
-funcionarios = [
-  {
-      id: 0,
-      nome: "Funcionario"
+public async getFuncionarioById(id: number){
+  return await prisma.funcionario.findUnique({ where: { id } });
+};
+
+public async createFuncionario (id: number, nome: string){
+  return await prisma.funcionario.create({data: {
+    nome: nome
+  }})
+}
+
+public async updateFuncionario(id: number, nome:string){
+  const data = {
+    nome: nome
   }
-];
+  return await prisma.funcionario.update(
+    { where: { id }, data})
+}
 
-public getAllFuncionarios(){
-  return(this.funcionarios);
-};
-
-public getFuncionarioById = (id: number) => {
-  const user = this.funcionarios.find(u => u.id === id);
-  return user ? user : null;
-};
-
-public createFuncionario (id: number, nome: string){
-  this.funcionarios.push({ id, nome});
-  return this.getFuncionarioById(id);
-};
-
-public updateFuncionario(id: number, nome:string){
-  const funcionario = this.funcionarios.find(u => u.id === (id));
-  if (funcionario) {
-    funcionario.nome = nome;
-    return funcionario;
-  } else {
-    return null;
-  }
-};
-
-public deleteFuncionario(id: number){
-  const index = this.funcionarios.findIndex(u => u.id === (id));
-  if (index !== -1) {
-    const funcionario = this.funcionarios.splice(index, 1);
-    return funcionario;
-  } else {
-    return null;
-  }
+public async deleteFuncionario(id: number){
+  return await prisma.funcionario.delete({ where: { id }})
 };
 
 }

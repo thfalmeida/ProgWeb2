@@ -1,32 +1,42 @@
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { Express } from 'express'; // Supondo que sua aplicação seja Express
+import { Express } from 'express';
 
-export const setupSwagger = (app: Express) => {
-  // Defina as opções de documentação
-  const swaggerOptions = {
-    swaggerDefinition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'PetCare 0.1 Alpha version',
-        version: '1.0.0',
-        description: 'Documentação da API usando Swagger',
-        contact: {
-          name: 'Suporte',
-          email: 'thiago.farias.almeida@ccc.ufcg.edu.br',
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API com JWT',
+      version: '1.0.0',
+      description: 'Documentação da API com autenticação JWT',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Servidor de desenvolvimento',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT', // Formato do token esperado
         },
-        servers: [
-          {
-            url: 'http://localhost:3000',
-          },
-        ],
       },
     },
-    // Caminho para os arquivos de definição de rota
-    apis: ['./src/routes/*.ts'], // Ajuste o caminho conforme necessário
-  };
+    security: [
+      {
+        bearerAuth: [], // Define que todas as rotas requerem autenticação por token JWT
+      },
+    ],
+  },
+  apis: ['./src/routes/*.ts'], // Caminho para os arquivos de rotas
+};
 
-  const swaggerDocs = swaggerJsDoc(swaggerOptions);
-  console.log(JSON.stringify(swaggerDocs, null, 2)); // Log do JSON gerado pelo Swagger
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+export const setupSwagger = (app: Express) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  console.log('Swagger disponível em http://localhost:3000/api-docs');
 };

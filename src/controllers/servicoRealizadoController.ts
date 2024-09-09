@@ -25,19 +25,19 @@ export class ServicoRealizadoController{
     }
 
     public createServicoRealizado(req: Request, res: Response){
-        const { id, clienteId, servicoId, faturaId, petId} = req.body;
-        const servicoRealizado = this.servicoRealizadoService.createServicoRealizado(id, clienteId, servicoId, faturaId, petId);    
+        const { funcionarioId, clienteId, servicoId, faturaId, petId} = req.body;
+        const servicoRealizado = this.servicoRealizadoService.createServicoRealizado(servicoId, faturaId , clienteId, funcionarioId, petId);    
         res.json(servicoRealizado)
     }
 
     public updateServicoRealizado(req: Request, res: Response){
-        const { id, clienteId, servicoId, faturaId, petId} = req.body;
-        const servicoRealizado = this.servicoRealizadoService.updateServicoRealizado(id, clienteId, servicoId, faturaId, petId);    
+        const { id, clienteId, servicoId, faturaId, petId, funcionarioId} = req.body;
+        const servicoRealizado = this.servicoRealizadoService.updateServicoRealizado(id, servicoId, faturaId, clienteId, funcionarioId, petId);    
         res.json(servicoRealizado)
     }
 
     public deleteServicoRealizado(req: Request, res:Response){
-        const servicoRealizado = this.servicoRealizadoService.deleteServicoRealizadoById(parseInt(req.params.clienteId));
+        const servicoRealizado = this.servicoRealizadoService.deleteServicoRealizado(parseInt(req.params.clienteId));
         res.json(servicoRealizado)
     }
 

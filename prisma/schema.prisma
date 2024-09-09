@@ -13,6 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Definindo o ENUM para o status da fatura
+enum FaturaStatus {
+  ABERTA
+  FECHADA
+  PAGA
+}
+
+enum UserRole {
+  CLIENTE
+  FUNCIONARIO
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  login     String   @unique
+  password  String
+  role      UserRole
+}
+
 model Pet {
   id               Int                @id @default(autoincrement())
   nome             String
@@ -33,13 +52,14 @@ model Cliente {
 
 model Funcionario {
   id               Int                @id @default(autoincrement())
-  name             String
+  nome             String
   servicoRealizado ServicoRealizado[]
 }
 
 model Servico {
   id               Int                @id @default(autoincrement())
-  name             String
+  nome             String
+  descricao        String
   valor            Float
   servicoRealizado ServicoRealizado[]
 }
@@ -48,7 +68,7 @@ model Fatura {
   id               Int                @id @default(autoincrement())
   clienteId        Int
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
-  valor_total      Float
+  fechada          FaturaStatus       @default(ABERTA)
   servicoRealizado ServicoRealizado[]
 }
 

@@ -4,20 +4,20 @@ import clienteRoutes from './routes/clienteRoutes'
 import funcionarioRoutes from './routes/funcionarioRoutes'
 import servicoRealizadoRoutes from './routes/servicoRealizadoRoutes'
 import servicoRoutes from './routes/servicoRoutes'
+import authRotes from './routes/authRoutes'
 import { setupSwagger } from './config/swagger';
 
 
 const app = express();
 const port = 3000;
 
-let currentId = 0;
-
-
 // Configure o Swagger
 setupSwagger(app);
 app.use(express.json());
 
+
 // Usar os roteadores
+app.use('/auth', authRotes)
 app.use('/servicoContratado', servicoRealizadoRoutes)
 app.use('/pets', petRoutes);
 app.use('/clientes', clienteRoutes);

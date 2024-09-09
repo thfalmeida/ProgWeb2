@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { FuncionarioController} from '../controllers/funcionarioController';
+import { authenticateJWT, authorizeRole } from '../middleware/authMiddleware';
 
 const router = Router();
 const funcionarioController = new FuncionarioController();
@@ -32,7 +33,7 @@ const funcionarioController = new FuncionarioController();
  *                   name:
  *                     type: string
  */
-router.get('/', funcionarioController.getAllFuncionarios);
+router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), funcionarioController.getAllFuncionarios);
 
 
 /**
@@ -65,7 +66,7 @@ router.get('/', funcionarioController.getAllFuncionarios);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.get('/:id', funcionarioController.getFuncionarioById);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), funcionarioController.getFuncionarioById);
 
 /**
  * @swagger
@@ -93,7 +94,7 @@ router.get('/:id', funcionarioController.getFuncionarioById);
  *       400:
  *         description: Dados inválidos
  */
-router.post('/', funcionarioController.createFuncionario);
+router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), funcionarioController.createFuncionario);
 
 
 /**
@@ -129,7 +130,7 @@ router.post('/', funcionarioController.createFuncionario);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.put('/:id', funcionarioController.updateFuncionario);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), funcionarioController.updateFuncionario);
 
 
 
@@ -152,7 +153,7 @@ router.put('/:id', funcionarioController.updateFuncionario);
  *       404:
  *         description: Funcionario não encontrado
  */
-router.delete('/:id', funcionarioController.deleteFuncionario);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), funcionarioController.deleteFuncionario);
 
 
 
