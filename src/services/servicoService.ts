@@ -12,7 +12,7 @@ export class ServicoService{
         return await this.prisma.servico.findUnique({ where: { id } });
       };
       
-      public async createServico (id: number, nome: string, valor: number, descricao: string){
+      public async createServico (nome: string, valor: number, descricao: string){
         return await this.prisma.servico.create({data: {
           nome: nome,
           valor: valor,

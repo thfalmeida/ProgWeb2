@@ -12,7 +12,7 @@ public async getFuncionarioById(id: number){
   return await prisma.funcionario.findUnique({ where: { id } });
 };
 
-public async createFuncionario (id: number, nome: string){
+public async createFuncionario (nome: string){
   return await prisma.funcionario.create({data: {
     nome: nome
   }})

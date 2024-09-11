@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { FuncionarioService } from '../services/funcionarioService';
+import { FuncionatioValidation } from '../validation/funcionarioValidation';
 
 export class FuncionarioController{
   private funcionarioService: FuncionarioService;
@@ -21,18 +22,51 @@ export class FuncionarioController{
     }
   }
 
-  public createFuncionario = (req: Request, res: Response) => {
-    const { id, nome} = req.body;
-    const funcionario = this.funcionarioService.createFuncionario(id, nome);
-    res.status(201).json(funcionario);
+  public createFuncionario =  async (req: Request, res: Response) => {
+    const { nome} = req.body;
+    
+    try{
+      const validationError = FuncionatioValidation.validate({nome})
+      if(validationError){
+        res.status(400).json({erros: validationError})
+      }
+      const funcionario =  await this.funcionarioService.createFuncionario(nome);
+      res.status(201).json(funcionario);
+    }catch(error){
+      if(error instanceof Error){
+        return res.status(500).json({
+          error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+          info: error.message,
+          stackTrace: error.stack
+        })
+      }
+    }
+    
   };
 
-  public updateFuncionario = (req: Request, res: Response) => {
+  public updateFuncionario = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { nome } = req.body;
-    const funcionario = this.funcionarioService.updateFuncionario(parseInt(id), nome);
+    
+    try{
+      const validationError = FuncionatioValidation.validate({nome})
+      if(validationError){
+        res.status(400).json({erros: validationError})
+      }
 
-    funcionario ? res.status(200).json(funcionario) : res.status(404).send("Funcionario não encontrado")
+      const funcionario = await this.funcionarioService.updateFuncionario(parseInt(id), nome);
+      funcionario ? res.status(200).json(funcionario) : res.status(404).send("Funcionario não encontrado")
+    }catch(error){
+      if(error instanceof Error){
+        return res.status(500).json({
+          error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+          info: error.message,
+          stackTrace: error.stack
+        })
+      }
+    }
+
+    
   };
 
   public deleteFuncionario = (req: Request, res: Response) => {

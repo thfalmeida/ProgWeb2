@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PetService } from '../services/petService';
+import { PetValidation } from '../validation/petValidation';
 
 export class PetController{
   private petService: PetService;
@@ -18,18 +19,52 @@ public getPetById = (req: Request, res: Response) => {
   pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado");
 };
 
-public createPet = (req: Request, res: Response) => {
-  const { id, nome, idade, raça } = req.body;
+public createPet = async (req: Request, res: Response) => {
+  const { id, nome, clienteId } = req.body;
 
-  const pet = this.petService.createPet(id, nome, idade);
-  res.status(201).json(pet);
+  try{
+    const validationError = PetValidation.validate({nome})
+    if(validationError){
+      res.status(400).json({erros: validationError})
+    }
+
+    const pet = await this.petService.createPet(id, nome, clienteId);
+    res.status(201).json(pet);
+  }catch(error){
+    if(error instanceof Error){
+      return res.status(500).json({
+        error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+        info: error.message,
+        stackTrace: error.stack
+      })
+    }
+  }
+
+  
 };
 
 public updatePet = (req: Request, res: Response) => {
   const { id } = req.params;
-  const { nome, idade, raça } = req.body;
-  const pet = this.petService.updatePet(parseInt(id), nome, idade)
-  pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado");
+  const { nome, clienteId} = req.body;
+
+  try{
+    const validationError = PetValidation.validate({nome})
+    if(validationError){
+      res.status(400).json({erros: validationError})
+    }
+
+    const pet = this.petService.updatePet(parseInt(id), nome, clienteId)
+    pet ? res.status(200).json(pet) : res.status(404).send("Pet não encontrado");
+  }catch(error){
+    if(error instanceof Error){
+      return res.status(500).json({
+        error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+        info: error.message,
+        stackTrace: error.stack
+      })
+    }
+  }
+
 };
 
 public deletePet = (req: Request, res: Response) => {
