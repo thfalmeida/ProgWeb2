@@ -1,20 +1,25 @@
 import { PrismaClient } from "@prisma/client";
 import { ClienteModel } from "../models/clienteModel";
 
-const prisma = new PrismaClient();
+
 
 export class ClienteService{
 
+  private prisma: PrismaClient;
+
+  constructor(prismaClient?: PrismaClient) {
+    this.prisma = prismaClient || new PrismaClient();
+}
     public async getAllClientes(){
-        return await prisma.cliente.findMany();
+        return await this.prisma.cliente.findMany();
     }
 
     public async getClienteById(id: number){
-      return await prisma.cliente.findUnique({ where: { id } });
+      return await this.prisma.cliente.findUnique({ where: { id } });
     }
 
     public async createCliente(nome: string, telefone: string, endereco:string){
-        return await prisma.cliente.create({data: {
+        return await this.prisma.cliente.create({data: {
           nome: nome,
           telefone: telefone,
           endereco: endereco
@@ -27,11 +32,11 @@ export class ClienteService{
         telefone: telefone,
         endereco : endereco
       }
-      return await prisma.cliente.update(
+      return await this.prisma.cliente.update(
         { where: { id }, data})
     }
 
     public async deleteCliente(id: number){
-      return prisma.cliente.delete({ where: { id } });
+      return this.prisma.cliente.delete({ where: { id } });
     }
 }

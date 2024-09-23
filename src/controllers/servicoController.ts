@@ -53,7 +53,7 @@ export class ServicoController {
       }
   
       const servico = this.servicoService.updateServico(parseInt(id), nome, valor, descricao);
-      servico ? res.status(200).json(servico) : res.status(404).send("Servico não encontrado")
+      servico ? res.status(201).json(servico) : res.status(404).send("Servico não encontrado")
     }catch(error){
       if(error instanceof Error){
         return res.status(500).json({
