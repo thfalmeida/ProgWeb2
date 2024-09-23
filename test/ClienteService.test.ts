@@ -59,7 +59,7 @@ describe('createCliente', () => {
 });
 
 
-describe('DeleteStudentService', () => {
+describe('DeleteclientService', () => {
     let clienteService: ClienteService;
     let prismaMock: PrismaClient;
 
@@ -101,7 +101,7 @@ describe('DeleteStudentService', () => {
     });
 });
 
-describe('GetStudentByIdService', () => {
+describe('GetclientByIdService', () => {
     let clienteService: ClienteService;
     let prismaMock: PrismaClient;
 
@@ -110,9 +110,9 @@ describe('GetStudentByIdService', () => {
         clienteService = new ClienteService(prismaMock);
     });
 
-    it('should return a student when found', async () => {
-        const studentData = { id: 1, name: 'John Doe', Question: [] };
-        prismaMock.Cliente.findUnique = jest.fn().mockResolvedValue(studentData);
+    it('should return a client when found', async () => {
+        const clientData = { id: 1, name: 'John Doe', Question: [] };
+        prismaMock.Cliente.findUnique = jest.fn().mockResolvedValue(clientData);
 
         const result = await clienteService.getClienteById(1);
 
@@ -122,10 +122,10 @@ describe('GetStudentByIdService', () => {
                 Question: true,
             },
         });
-        expect(result).toEqual(studentData);
+        expect(result).toEqual(clientData);
     });
 
-    it('should throw an error when the student is not found', async () => {
+    it('should throw an error when the client is not found', async () => {
         prismaMock.Cliente.findUnique = jest.fn().mockResolvedValue(null);
 
         await expect(clienteService.getClienteById(999)).rejects.toThrow("Cliente não encontrado.");
@@ -142,7 +142,7 @@ describe('GetStudentByIdService', () => {
     });
 });
 
-describe('GetStudentService', () => {
+describe('GetclientService', () => {
     let clienteService: ClienteService;
     let prismaMock: PrismaClient;
 
@@ -151,13 +151,13 @@ describe('GetStudentService', () => {
         clienteService = new ClienteService(prismaMock);
     });
 
-    it('should return all students successfully', async () => {
-        const studentsData = [
+    it('should return all clients successfully', async () => {
+        const clientsData = [
             { id: 1, name: 'John Doe', Question: [] },
             { id: 2, name: 'Jane Smith', Question: [] },
         ];
 
-        prismaMock.Cliente.findMany = jest.fn().mockResolvedValue(studentsData);
+        prismaMock.Cliente.findMany = jest.fn().mockResolvedValue(clientsData);
 
         const result = await clienteService.getAllClientes();
 
@@ -166,17 +166,17 @@ describe('GetStudentService', () => {
                 Question: true,
             },
         });
-        expect(result).toEqual(studentsData);
+        expect(result).toEqual(clientsData);
     });
 
-    it('should throw an error if there is an issue fetching students', async () => {
+    it('should throw an error if there is an issue fetching clients', async () => {
         const error = new Error('Database error');
         prismaMock.Cliente.findMany = jest.fn().mockRejectedValue(error);
 
         await expect(clienteService.getAllClientes()).rejects.toThrow('Database error');
     });
 
-    it('should log an error message when fetching students fails', async () => {
+    it('should log an error message when fetching clients fails', async () => {
         const error = new Error('Database error');
         prismaMock.Cliente.findMany = jest.fn().mockRejectedValue(error);
         console.error = jest.fn();
@@ -196,7 +196,7 @@ describe('AtualizaCliente', () => {
         clienteService = new ClienteService(prismaMock);
     });
 
-    it('should update a student successfully', async () => {
+    it('should update a client successfully', async () => {
         const clienteId = 1;
         const cliente = {
             nome: 'John Doe',
@@ -210,7 +210,7 @@ describe('AtualizaCliente', () => {
 
         const result = await clienteService.updateCliente(clienteId, cliente.nome, cliente.telefone, cliente.endereco);
 
-        expect(prismaMock.student.update).toHaveBeenCalledWith({
+        expect(prismaMock.client.update).toHaveBeenCalledWith({
             where: { id: clienteId },
             data: {
                 nome: cliente.nome,
@@ -221,7 +221,7 @@ describe('AtualizaCliente', () => {
         expect(result).toEqual(clienteAtualizado);
     });
 
-    it('should throw an error if the student is not found', async () => {
+    it('should throw an error if the client is not found', async () => {
         const clienteId = 999;
         const cliente = {
             nome: 'John Doe',
@@ -229,7 +229,7 @@ describe('AtualizaCliente', () => {
             endereco: 'Ceilandia, lote 14'
         };
 
-        const error = new PrismaClientKnownRequestError('Student not found.', {
+        const error = new PrismaClientKnownRequestError('client not found.', {
             code: 'P2025',
             clientVersion: '',
         });
@@ -254,7 +254,7 @@ describe('AtualizaCliente', () => {
         await expect(clienteService.updateCliente(clienteId, cliente.nome, cliente.telefone, cliente.endereco)).rejects.toThrow('Database error');
     });
 
-    it('should log an error message when updating a student fails', async () => {
+    it('should log an error message when updating a client fails', async () => {
         const clienteId = 999;
         const cliente = {
             nome: 'John Doe',
@@ -267,6 +267,6 @@ describe('AtualizaCliente', () => {
         prismaMock.Cliente.update = jest.fn().mockRejectedValue(error);
 
         await expect(clienteService.updateCliente(clienteId, cliente.nome, cliente.telefone, cliente.endereco)).rejects.toThrow('Database error');
-        expect(console.error).toHaveBeenCalledWith('Error updating student:', error);
+        expect(console.error).toHaveBeenCalledWith('Error updating client:', error);
     });
 });
