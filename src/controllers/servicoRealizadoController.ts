@@ -2,78 +2,84 @@ import { Request, Response } from 'express';
 import { ServicoRealizadoService } from "../services/servicoRealizadoService";
 import { ServicoRealizadoValidation } from '../validation/servicoRealizadoValidation';
 
+const servicoRealizadoService = new ServicoRealizadoService()
 export class ServicoRealizadoController{
-    servicoRealizadoService: ServicoRealizadoService
 
-    constructor(){
-        this.servicoRealizadoService = new ServicoRealizadoService();
-    }
+public async getAllServicosRealizados(req: Request, res: Response){
+  console.log("Requisicao errada")
+   const servicos = await servicoRealizadoService.getAllServicosRealizados()
+    res.json(servicos);
+}
 
-    public getAllServicosRealizados(req: Request, res: Response){
-        res.json(this.servicoRealizadoService.getAllServicosRealizados());
-    }
+  public async getServicoRealizadoByID(req: Request, res: Response){ 
+    console.log("Requisicao errada byID")
+    res.json('Falha')
+      res.json(servicoRealizadoService.getServicoRealizadoById(parseInt(req.params.id)));
+  }
 
-    public getServicoRealizadoByID(req: Request, res: Response){
-        res.json(this.servicoRealizadoService.getServicoRealizadoById(parseInt(req.params.id)));
-    }
+  public getServicoRealizadoByFaturaID(req: Request, res: Response){
+    console.log("Requisicao errada")
+      res.json(servicoRealizadoService.getServicoRealizadoById(parseInt(req.params.faturaId)));
+  }
 
-    public getServicoRealizadoByFaturaID(req: Request, res: Response){
-        res.json(this.servicoRealizadoService.getServicoRealizadoById(parseInt(req.params.faturaId)));
-    }
+  public async getServicoRealizadoByClientID(req: Request, res: Response){
+    const clienteId = req.body.clientId;
+    const servicos = await servicoRealizadoService.getServicoRealizadoByClienteId(clienteId)
+    res.json(servicos);
+  }
 
-    public getServicoRealizadoByClienteID(req: Request, res: Response){
-        res.json(this.servicoRealizadoService.getServicoRealizadoById(parseInt(req.params.clienteId)));
-    }
+  public async createServicoRealizado(req: Request, res: Response){
+    const { clienteId, servicoId, petId} = req.body;
 
-    public async createServicoRealizado(req: Request, res: Response){
-        const { funcionarioId, clienteId, servicoId, faturaId, petId} = req.body;
+    console.log({clienteId, servicoId, petId})
+    try{
+        const validationError = ServicoRealizadoValidation.validate({ clienteId, servicoId, petId})
+        if(validationError){
+          res.status(400).json({erros: validationError})
+        }
+        const servicoRealizado = await servicoRealizadoService.createServicoRealizado(servicoId, clienteId, petId);
+        res.status(201).json(servicoRealizado)
+      }catch(error){
+        if(error instanceof Error){
+          return res.status(500).json({
+            error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+            info: error.message,
+            stackTrace: error.stack
+          })
+        }
+      } 
+  }
 
-        try{
-            const validationError = ServicoRealizadoValidation.validate({ funcionarioId, clienteId, servicoId, faturaId, petId})
-            if(validationError){
-              res.status(400).json({erros: validationError})
-            }
-        
-            const servicoRealizado = await this.servicoRealizadoService.createServicoRealizado(servicoId, faturaId , clienteId, funcionarioId, petId);    
-            res.status(201).json(servicoRealizado)
-          }catch(error){
-            if(error instanceof Error){
-              return res.status(500).json({
-                error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
-                info: error.message,
-                stackTrace: error.stack
-              })
-            }
-          } 
-    }
+  public async updateServicoRealizado(req: Request, res: Response){
+      const { id, clienteId, servicoId, petId} = req.body;
+      // const servicoRealizado = this.servicoRealizadoService.updateServicoRealizado(id, servicoId, clienteId,  petId);  
+      console.log({ id, clienteId, servicoId, petId})
+      try{
+          const validationError = ServicoRealizadoValidation.validate({ clienteId, servicoId, petId})
+          if(validationError){
+            res.status(400).json({erros: validationError})
+            return;
+          }
+      
+          const servicoRealizado = await servicoRealizadoService.updateServicoRealizado(id, servicoId, clienteId, petId);  
+          res.status(201).json(servicoRealizado)
+        }catch(error){
+          if(error instanceof Error){
+            return res.status(500).json({
+              error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
+              info: error.message,
+              stackTrace: error.stack
+            })
+          }
+        } 
+  }
 
-    public async updateServicoRealizado(req: Request, res: Response){
-        const { id, clienteId, servicoId, faturaId, petId, funcionarioId} = req.body;
-        const servicoRealizado = this.servicoRealizadoService.updateServicoRealizado(id, servicoId, faturaId, clienteId, funcionarioId, petId);  
-        
-        try{
-            const validationError = ServicoRealizadoValidation.validate({ funcionarioId, clienteId, servicoId, faturaId, petId})
-            if(validationError){
-              res.status(400).json({erros: validationError})
-            }
-        
-            const servicoRealizado = await this.servicoRealizadoService.updateServicoRealizado(id, servicoId, faturaId, clienteId, funcionarioId, petId);  
-            res.status(201).json(servicoRealizado)
-          }catch(error){
-            if(error instanceof Error){
-              return res.status(500).json({
-                error: "Um erro inexperado foi encontrado durante o processamento da operacao,",
-                info: error.message,
-                stackTrace: error.stack
-              })
-            }
-          } 
-    }
-
-    public deleteServicoRealizado(req: Request, res:Response){
-        const servicoRealizado = this.servicoRealizadoService.deleteServicoRealizado(parseInt(req.params.clienteId));
-        res.json(servicoRealizado)
-    }
+  public deleteServicoRealizado(req: Request, res:Response){
+    const id = parseInt(req.params.id)
+    console.log(id)
+      const servicoRealizado = servicoRealizadoService.deleteServicoRealizado(id);
+      res.json(servicoRealizado)
+  }
 
     
-}
+} 

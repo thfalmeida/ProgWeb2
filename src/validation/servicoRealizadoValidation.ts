@@ -8,17 +8,7 @@ export class ServicoRealizadoValidation{
             'number.min(0)': 'O nome do cliente não pode ser menor do que 0',
             'any.required': 'O nome do cliente é necessário',
         }),
-        faturaId: Joi.number().required().messages({
-            'number.integer': 'O nome do cliente precisa ser um numero integer',
-            'number.min(0)': 'O nome do cliente não pode ser menor do que 0',
-            'any.required': 'O nome do cliente é necessário',
-        }),
         clienteId: Joi.number().required().messages({
-            'number.integer': 'O nome do cliente precisa ser um numero integer',
-            'number.min(0)': 'O nome do cliente não pode ser menor do que 0',
-            'any.required': 'O nome do cliente é necessário',
-        }),
-        funcionarioId: Joi.number().required().messages({
             'number.integer': 'O nome do cliente precisa ser um numero integer',
             'number.min(0)': 'O nome do cliente não pode ser menor do que 0',
             'any.required': 'O nome do cliente é necessário',
@@ -33,6 +23,7 @@ export class ServicoRealizadoValidation{
     public static validate(data: any){
         const{error} = this.schema.validate(data, {abortEarly: false});
         if(error){
+            console.log(error.details.map(detail => detail.message))
             return error.details.map(detail => detail.message)
         }
 

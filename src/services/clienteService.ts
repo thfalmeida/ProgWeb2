@@ -18,10 +18,11 @@ export class ClienteService{
       return await this.prisma.cliente.findUnique({ where: { id } });
     }
 
-    public async createCliente(nome: string, telefone: string, endereco:string){
+    public async createCliente(nome: string, telefone: string, endereco:string, userId:number){
         return await this.prisma.cliente.create({data: {
           nome: nome,
           telefone: telefone,
+          userId: userId,
           endereco: endereco
         }})
     }

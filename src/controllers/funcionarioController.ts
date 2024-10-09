@@ -23,14 +23,14 @@ export class FuncionarioController{
   }
 
   public createFuncionario =  async (req: Request, res: Response) => {
-    const { nome} = req.body;
+    const { nome, userId} = req.body;
     
     try{
       const validationError = FuncionatioValidation.validate({nome})
       if(validationError){
         res.status(400).json({erros: validationError})
       }
-      const funcionario =  await this.funcionarioService.createFuncionario(nome);
+      const funcionario =  await this.funcionarioService.createFuncionario(nome, userId);
       res.status(201).json(funcionario);
     }catch(error){
       if(error instanceof Error){

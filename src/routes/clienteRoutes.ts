@@ -17,8 +17,6 @@ const clienteController = new ClienteController();
  * /clientes:
  *   get:
  *     summary: Retorna uma lista de clientes
- *      security:
- *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     responses:
  *       200:
@@ -42,8 +40,6 @@ router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteControlle
  * /clientes/{id}:
  *   get:
  *     summary: Retorna um cliente específico pelo ID
- *      security:
- *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     parameters:
  *       - in: path
@@ -78,8 +74,6 @@ router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteContro
  * /clientes:
  *   post:
  *     summary: Cria um novo cliente
- *     security:
- *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     requestBody:
  *       required: true
@@ -106,15 +100,13 @@ router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteContro
  *       400:
  *         description: Dados inválidos
  */
-router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), clienteController.createCliente);
+router.post('/',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), clienteController.createCliente);
 
 /**
  * @swagger
  * /clientes/{id}:
  *   put:
  *     summary: Atualiza um cliente existente
- *     security:
- *       - bearerAuth: [] 
  *     tags: [Cliente]
  *     parameters:
  *       - in: path

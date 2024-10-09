@@ -1,16 +1,21 @@
 // src/middleware/authMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
+import { PrismaClient } from "@prisma/client";
+
 import jwt from 'jsonwebtoken';
 import { env } from 'process';
 
-const JWT_SECRET = "senha secreta super segura 100 aprovada"
+const JWT_SECRET = "senha_secreta"
+const prisma = new PrismaClient();
 
 interface JwtPayload {
   id: number;
   role: string;
+  clienteId: number;
+  funcionarioId:number;
 }
 
-export const authenticateJWT = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateJWT = async (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -19,12 +24,29 @@ export const authenticateJWT = (req: Request, res: Response, next: NextFunction)
 
   const token = authHeader.split(' ')[1]
 
-  jwt.verify(token, JWT_SECRET, (err, user) => {
+  jwt.verify(token, JWT_SECRET, async (err, user) => {
     if (err) {
+      console.log(err)
       return res.status(403).json({ message: 'Token inválido' });
     }
+  const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload; // Verifica e decodifica o token
+
+  const userId = decoded.clienteId || decoded.funcionarioId;
+
+  req.body.clienteId = userId;
+
+  if(userId){
+    const users = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { cliente: true, funcionario: true },
+    });
 
     req.user = user as JwtPayload;
+  }
+
+  // Busca o usuário e verifica se ele é Cliente ou Funcionário
+
+    
     next();
   });
 };

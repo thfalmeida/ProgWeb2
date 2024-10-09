@@ -30,6 +30,8 @@ model User {
   login     String   @unique
   password  String
   role      UserRole
+  cliente Cliente?
+  funcionario Funcionario?
 }
 
 model Pet {
@@ -45,6 +47,8 @@ model Cliente {
   nome             String
   telefone         String
   endereco         String
+  userId           Int  @unique
+  user             User         @relation(fields: [userId], references: [id])
   pet              Pet[]
   fatura           Fatura[]
   servicoRealizado ServicoRealizado[]
@@ -53,7 +57,8 @@ model Cliente {
 model Funcionario {
   id               Int                @id @default(autoincrement())
   nome             String
-  servicoRealizado ServicoRealizado[]
+  userId           Int  @unique
+  user             User         @relation(fields: [userId], references: [id])
 }
 
 model Servico {
@@ -69,19 +74,14 @@ model Fatura {
   clienteId        Int
   cliente          Cliente            @relation(fields: [clienteId], references: [id])
   fechada          FaturaStatus       @default(ABERTA)
-  servicoRealizado ServicoRealizado[]
 }
 
 model ServicoRealizado {
   id            Int         @id @default(autoincrement())
   servicoId     Int
-  faturaId      Int
   clienteId     Int
-  funcionarioId Int
   petId         Int
   servico       Servico     @relation(fields: [servicoId], references: [id])
-  fatura        Fatura      @relation(fields: [faturaId], references: [id])
   cliente       Cliente     @relation(fields: [clienteId], references: [id])
-  funcionario   Funcionario @relation(fields: [funcionarioId], references: [id])
   pet           Pet         @relation(fields: [petId], references: [id])
 }

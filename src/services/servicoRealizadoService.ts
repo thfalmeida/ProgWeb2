@@ -1,38 +1,47 @@
 import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
+
 export class ServicoRealizadoService{
-    private prisma = new PrismaClient();
+    
 
     public async getAllServicosRealizados(){
-        return await this.prisma.servicoRealizado.findMany();
+        return await prisma.servicoRealizado.findMany();
     }
 
     public async getServicoRealizadoById(id: number){
-        return await this.prisma.servicoRealizado.findUnique({ where: { id } });
-      };
+        return await prisma.servicoRealizado.findUnique({ where: { id } });
+    };
+
+    public async getServicoRealizadoByClienteId(clienteId: number){
+        const servicos = await prisma.servicoRealizado.findMany({ where: { clienteId: clienteId },       include: {
+            pet: true,
+            servico: true
+          }, });
+        return servicos
+    };
+    
       
-    public async createServicoRealizado (servicoId: number, faturaId: number, clienteId: number, funcionarioId: number, petId: number){
-        return await this.prisma.servicoRealizado.create({data: {
-        servicoId: servicoId,
-        faturaId: faturaId,
-        clienteId: clienteId,
-        funcionarioId: funcionarioId,
-        petId: petId
-        }})
+    public async createServicoRealizado (servicoId: number, clienteId: number,petId: number){
+        const servico = await prisma.servicoRealizado.create({data: {
+            servicoId: servicoId,
+            clienteId: clienteId,
+            petId: petId
+            }})
+        return servico;
     }
       
-    public async updateServicoRealizado (id: number, servicoId: number, faturaId: number, clienteId: number, funcionarioId: number, petId: number){
+    public async updateServicoRealizado (id: number, servicoId: number, clienteId: number,petId: number){
         const data = {
             servicoId: servicoId,
-            faturaId: faturaId,
             clienteId: clienteId,
-            funcionarioId: funcionarioId,
             petId: petId
         }
-        return await this.prisma.servicoRealizado.update({where: { id }, data})
+        return await prisma.servicoRealizado.update({where: { id }, data})
     }
       
     public async deleteServicoRealizado(id: number){
-        return await this.prisma.servicoRealizado.delete({ where: { id }})
+        await prisma.servicoRealizado.delete({ where: { id }})
+        return true;
     };
 }

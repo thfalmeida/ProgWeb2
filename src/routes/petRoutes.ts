@@ -32,11 +32,32 @@ const petController = new PetController();
  *                     type: integer
  *                   name:
  *                     type: string
- *                    raça:
- *                      type: string
  */
-router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), petController.getAllpets);
+router.get('/',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), petController.getAllpets);
 
+
+/**
+ * @swagger
+ * /pets/client:
+ *   get:
+ *     summary: Retorna uma lista de pets do cliente
+ *     tags: [pet]
+ *     responses:
+ *       200:
+ *         description: Lista de pet retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ */
+router.get('/client',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), petController.getPetByClienteId);
 
 
 

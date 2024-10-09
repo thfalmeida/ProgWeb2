@@ -41,7 +41,7 @@ router.get('/', authenticateJWT, authorizeRole(['FUNCIONARIO']),servicoRealizado
 
 /**
  * @swagger
- * /servicoContratado/{id}:
+ * /servicoContratado/find/{id}:
  *   get:
  *     summary: Retorna um servico contratado específico pelo ID
  *     tags: [ServicoRealizado]
@@ -71,11 +71,11 @@ router.get('/', authenticateJWT, authorizeRole(['FUNCIONARIO']),servicoRealizado
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByID);
+router.get('/find/:id',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByID);
 
 /**
  * @swagger
- * /servicoContratado/cliente/{id}:
+ * /servicoContratado/cliente/:
  *   get:
  *     summary: Retorna um servico contratado específico pelo ID do cliente contratante
  *     tags: [ServicoRealizado]
@@ -105,7 +105,7 @@ router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealiz
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByClienteID);
+router.get('/cliente/',authenticateJWT, authorizeRole(['CLIENTE', 'FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByClientID);
 
 /**
  * @swagger
@@ -139,11 +139,11 @@ router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealiz
  *       404:
  *         description: Serviço contratado não encontrado
  */
-router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByFaturaID);
+router.get('/fatura/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.getServicoRealizadoByFaturaID);
 
 /**
  * @swagger
- * /servicoContratado:
+ * /servicoContratado/:
  *   post:
  *     summary: Cadastra um novo serviço contratado
  *     tags: [ServicoRealizado]
@@ -173,7 +173,7 @@ router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealiz
  *       400:
  *         description: Dados inválidos
  */
-router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.createServicoRealizado);
+router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), servicoRealizadoController.createServicoRealizado);
 
 /**
  * @swagger
@@ -214,7 +214,7 @@ router.post('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizad
  *       400:
  *         description: Dados inválidos
  */
-router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.createServicoRealizado);
+router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), servicoRealizadoController.createServicoRealizado);
 
 /**
  * @swagger
@@ -235,6 +235,6 @@ router.put('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealiz
  *       404:
  *         description: não encontrado
  */
-router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoRealizadoController.deleteServicoRealizado);
+router.delete('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), servicoRealizadoController.deleteServicoRealizado);
 
 export default router;

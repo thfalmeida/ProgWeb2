@@ -5,10 +5,12 @@ import funcionarioRoutes from './routes/funcionarioRoutes'
 import servicoRealizadoRoutes from './routes/servicoRealizadoRoutes'
 import servicoRoutes from './routes/servicoRoutes'
 import authRotes from './routes/authRoutes'
+import cors from 'cors';
 import { setupSwagger } from './config/swagger';
 
 
 const app = express();
+app.use(cors());
 const port = 3000;
 
 // Configure o Swagger

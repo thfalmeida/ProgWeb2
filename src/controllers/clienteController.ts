@@ -3,7 +3,7 @@ import { ClienteService } from '../services/clienteService';
 import { ClienteValidation } from '../validation/clienteValidation';
 
 export class ClienteController{
-  private clienteService: ClienteService;
+  public clienteService: ClienteService;
   
   constructor(){
     this.clienteService = new ClienteService();
@@ -19,13 +19,13 @@ export class ClienteController{
   };
 
   public createCliente = async (req: Request, res: Response) => {
-    const {nome, telefone, endereco } = req.body;
+    const {nome, telefone, endereco, userId} = req.body;
     try{
       const validationError = ClienteValidation.validate({nome, telefone, endereco})
       if(validationError){
         res.status(400).json({erros: validationError})
       }
-      const retorno = await this.clienteService.createCliente(nome, telefone, endereco)
+      const retorno = await this.clienteService.createCliente(nome, telefone, endereco, userId)
       res.status(201).json(retorno);
     }catch(error){
       if(error instanceof Error){

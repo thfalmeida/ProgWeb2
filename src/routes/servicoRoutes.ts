@@ -34,7 +34,7 @@ const servicoController = new ServicoController();
  *                   name:
  *                     type: string
  */
-router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.getAllServicos);
+router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO','CLIENTE']), servicoController.getAllServicos);
 
 /**
  * @swagger
@@ -66,7 +66,7 @@ router.get('/',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoControlle
  *       404:
  *         description: servico não encontrado
  */
-router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO']), servicoController.getServicoById);
+router.get('/:id',authenticateJWT, authorizeRole(['FUNCIONARIO', 'CLIENTE']), servicoController.getServicoById);
 
 /**
  * @swagger

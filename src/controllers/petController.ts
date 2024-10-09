@@ -10,8 +10,18 @@ export class PetController{
   }
 
 
-public getAllpets = (req: Request, res: Response) => {
-  res.json();
+public getAllpets = async (req: Request, res: Response) => {
+  console.log("Getting pet list")
+  const pets = await this.petService.getAllPet()
+
+  console.log(pets);
+  res.json(pets);
+};
+
+public getPetByClienteId = async (req: Request, res: Response) => {
+  const clientId = req.body.clientId;
+  const pets = await this.petService.getPetByClient(clientId)
+  res.json(pets);
 };
 
 public getPetById = (req: Request, res: Response) => {
@@ -20,7 +30,7 @@ public getPetById = (req: Request, res: Response) => {
 };
 
 public createPet = async (req: Request, res: Response) => {
-  const { id, nome, clienteId } = req.body;
+  const { nome, clienteId } = req.body;
 
   try{
     const validationError = PetValidation.validate({nome})
@@ -28,7 +38,7 @@ public createPet = async (req: Request, res: Response) => {
       res.status(400).json({erros: validationError})
     }
 
-    const pet = await this.petService.createPet(id, nome, clienteId);
+    const pet = await this.petService.createPet(nome, clienteId);
     res.status(201).json(pet);
   }catch(error){
     if(error instanceof Error){
@@ -40,7 +50,6 @@ public createPet = async (req: Request, res: Response) => {
     }
   }
 
-  
 };
 
 public updatePet = (req: Request, res: Response) => {

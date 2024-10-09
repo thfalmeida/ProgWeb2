@@ -8,9 +8,9 @@ export class ServicoValidation{
             'any.required': 'O nome do cliente é necessário',
         }),
         valor: Joi.number().required().messages({
-            'number.base': 'O endereco do cliente precisa ser um numero valido',
-            'number.min(0)': 'O endereco do cliente não pode menor que 0',
-            'any.required': 'O endereco do cliente é necessário',
+            'number.base': 'O valor do servico precisa ser um numero valido',
+            'number.min(0)': 'O valor do servico não pode menor que 0',
+            'any.required': 'O valor do servico é necessário',
         }),
         descricao: Joi.string().required().messages({
             'string.base': 'O telefone do cliente precisa ser uma string',

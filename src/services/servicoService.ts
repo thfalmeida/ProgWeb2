@@ -20,14 +20,15 @@ export class ServicoService{
         }})
       }
       
-      public async updateServico(id: number, nome:string, valor: number, descricao: string){
+    public async updateServico(id: number, nome:string, valor: number, descricao: string){
         const data = {
           nome: nome,
           valor: valor,
           descricao: descricao
         }
-        return await this.prisma.servico.update(
+        const servico = await this.prisma.servico.update(
           { where: { id }, data})
+        return servico
       }
       
       public async deleteServico(id: number){
